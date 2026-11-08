@@ -23,7 +23,7 @@ cd android
 ./gradlew :app:assembleDebug
 ```
 
-The app initially opens Settings. IDs remain blank in a clean clone. To build a preconfigured demo, copy `android/demo.properties.example` to the ignored `android/demo.properties`; copy `ios/ShoparSDKDemo.local.xcconfig.example` to the ignored `ios/ShoparSDKDemo.local.xcconfig`. Fill the production app IDs and Discovery placement IDs there, keep `grpc.shopar.app:443` with TLS enabled, then rebuild and reinstall. Discovery never uses the Agency session.
+The app opens Settings when there is no complete Discovery setup. A preconfigured build opens Discovery when it has a valid app ID and selected placement. To prepare one, copy `android/demo.properties.example` to the ignored `android/demo.properties`; copy `ios/ShoparSDKDemo.local.xcconfig.example` to the ignored `ios/ShoparSDKDemo.local.xcconfig`. Fill the production app IDs and Discovery placement IDs there, keep `grpc.shopar.app:443` with TLS enabled, then rebuild and reinstall. Settings lets you choose a separate Shopar or Midnight appearance for Agency and Discovery and save those choices in local profiles. Style changes after SDK initialization are marked pending until relaunch. Discovery never uses the Agency session.
 
 TLS is enabled by default. Only the Android debug manifest permits cleartext for isolated local testing; the release manifest keeps cleartext disabled. Never disable TLS for Agency sessions outside a trusted local test environment.
 

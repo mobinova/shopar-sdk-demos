@@ -9,13 +9,18 @@ private struct DemoConfiguration: Codable, Equatable {
     var agencyHost = ""
     var agencyPort = "443"
     var agencyTLS = true
+    var agencyStylePreset: String? = nil
     var discoveryAppID = ""
     var discoveryHost = ""
     var discoveryPort = "443"
     var discoveryTLS = true
+    var discoveryStylePreset: String? = nil
     var collectDeviceMetadata = false
     var placementIDsText = ""
     var selectedPlacementID = ""
+
+    var agencyStyle: AgencyStyle { agencyStylePreset == "midnight" ? .midnight : .shopar }
+    var discoveryStyle: DiscoveryStyle { discoveryStylePreset == "midnight" ? .midnight : .shopar }
 
     init() {
         let defaults = Bundle.main.infoDictionary ?? [:]
@@ -40,11 +45,11 @@ private struct DemoConfiguration: Codable, Equatable {
     }
 
     var agencyStartup: DemoStartupConfiguration? {
-        DemoStartupConfiguration(appID: agencyAppID, host: agencyHost, port: agencyPort, tls: agencyTLS)
+        DemoStartupConfiguration(appID: agencyAppID, host: agencyHost, port: agencyPort, tls: agencyTLS, stylePreset: agencyStylePreset ?? "shopar")
     }
 
     var discoveryStartup: DemoStartupConfiguration? {
-        DemoStartupConfiguration(appID: discoveryAppID, host: discoveryHost, port: discoveryPort, tls: discoveryTLS)
+        DemoStartupConfiguration(appID: discoveryAppID, host: discoveryHost, port: discoveryPort, tls: discoveryTLS, stylePreset: discoveryStylePreset ?? "shopar")
     }
 }
 
@@ -53,6 +58,7 @@ private struct DemoStartupConfiguration: Equatable {
     let host: String
     let port: String
     let tls: Bool
+    let stylePreset: String
 
     var parsedPort: Int? { Int(port).flatMap { (1...65535).contains($0) ? $0 : nil } }
     var isValid: Bool {
@@ -131,15 +137,15 @@ private final class DemoSDKCoordinator: ObservableObject {
     @Published private(set) var activeAgency: DemoStartupConfiguration?
     @Published private(set) var activeDiscovery: DemoStartupConfiguration?
 
-    func startAgency(_ config: DemoStartupConfiguration?) -> String? {
+    func startAgency(_ config: DemoStartupConfiguration?, style: AgencyStyle) -> String? {
         guard let config, config.isValid, let port = config.parsedPort else {
             return "Enter a valid Agency app ID, host, and port in Settings."
         }
         if let activeAgency {
-            return activeAgency == config ? nil : "Agency startup settings are pending. Relaunch the demo to apply the new app ID or endpoint."
+            return activeAgency == config ? nil : "Agency app ID, endpoint, or style changed. Relaunch the demo to apply it."
         }
         do {
-            try ShoparAgency.configure(AgencyConfiguration(appID: config.appID, grpcHost: config.host, grpcPort: port, useTLS: config.tls))
+            try ShoparAgency.configure(AgencyConfiguration(appID: config.appID, grpcHost: config.host, grpcPort: port, useTLS: config.tls, style: style))
             activeAgency = config
             return nil
         } catch {
@@ -147,13 +153,13 @@ private final class DemoSDKCoordinator: ObservableObject {
         }
     }
 
-    func startDiscovery(_ config: DemoStartupConfiguration?, collectMetadata: Bool) -> String? {
+    func startDiscovery(_ config: DemoStartupConfiguration?, collectMetadata: Bool, style: DiscoveryStyle) -> String? {
         guard let config, config.isValid, let port = config.parsedPort else {
             return "Enter a valid Discovery app ID, host, and port in Settings."
         }
         if let activeDiscovery {
             guard activeDiscovery == config else {
-                return "Discovery startup settings are pending. Relaunch the demo to apply the new app ID or endpoint."
+                return "Discovery app ID, endpoint, or style changed. Relaunch the demo to apply it."
             }
             do {
                 try ShoparDiscovery.setOptionalDeviceMetadataCollectionEnabled(collectMetadata)
@@ -168,7 +174,8 @@ private final class DemoSDKCoordinator: ObservableObject {
                 grpcHost: config.host,
                 grpcPort: port,
                 useTLS: config.tls,
-                collectDeviceMetadata: collectMetadata
+                collectDeviceMetadata: collectMetadata,
+                style: style
             ))
             activeDiscovery = config
             return nil
@@ -216,7 +223,13 @@ struct ShoparSDKDemoApp: App {
                     .tabItem { Label(DemoTab.settings.rawValue, systemImage: DemoTab.settings.symbol) }
                     .tag(DemoTab.settings)
             }
-            .tint(.indigo)
+            .tint(Color(red: 24 / 255, green: 34 / 255, blue: 29 / 255))
+            .onAppear {
+                if settings.configuration.discoveryStartup?.isValid == true,
+                   settings.configuration.placementIDs.contains(settings.configuration.selectedPlacementID) {
+                    selectedTab = .discovery
+                }
+            }
         }
     }
 }
@@ -237,7 +250,7 @@ private struct AgencyDemoTab: View {
             }
         }
         .task(id: settings.configuration.agencyStartup) {
-            errorMessage = sdk.startAgency(settings.configuration.agencyStartup)
+            errorMessage = sdk.startAgency(settings.configuration.agencyStartup, style: settings.configuration.agencyStyle)
         }
         .alert("Account security belongs to the host app", isPresented: $showingHostSecurityInfo) {
             Button("OK", role: .cancel) { }
@@ -290,12 +303,13 @@ private struct DiscoveryDemoTab: View {
         .task(id: settings.configuration.discoveryStartup) {
             errorMessage = sdk.startDiscovery(
                 settings.configuration.discoveryStartup,
-                collectMetadata: settings.configuration.collectDeviceMetadata
+                collectMetadata: settings.configuration.collectDeviceMetadata,
+                style: settings.configuration.discoveryStyle
             )
         }
         .onChange(of: settings.configuration.collectDeviceMetadata) { value in
             if sdk.activeDiscovery == settings.configuration.discoveryStartup {
-                errorMessage = sdk.startDiscovery(settings.configuration.discoveryStartup, collectMetadata: value)
+                errorMessage = sdk.startDiscovery(settings.configuration.discoveryStartup, collectMetadata: value, style: settings.configuration.discoveryStyle)
             }
         }
     }
@@ -320,6 +334,13 @@ private struct DemoSettingsTab: View {
                     TextField("Agency app_id", text: config.agencyAppID)
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
                     endpointFields(host: config.agencyHost, port: config.agencyPort, tls: config.agencyTLS)
+                    Picker("SDK appearance", selection: Binding(
+                        get: { settings.configuration.agencyStylePreset ?? "shopar" },
+                        set: { config.agencyStylePreset.wrappedValue = $0 }
+                    )) {
+                        Text("Shopar").tag("shopar")
+                        Text("Midnight").tag("midnight")
+                    }
                     startupStatus(active: sdk.activeAgency, pending: agencyNeedsRestart)
                 } header: {
                     Text("Agency SDK")
@@ -331,6 +352,13 @@ private struct DemoSettingsTab: View {
                     TextField("Discovery app_id", text: config.discoveryAppID)
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
                     endpointFields(host: config.discoveryHost, port: config.discoveryPort, tls: config.discoveryTLS)
+                    Picker("SDK appearance", selection: Binding(
+                        get: { settings.configuration.discoveryStylePreset ?? "shopar" },
+                        set: { config.discoveryStylePreset.wrappedValue = $0 }
+                    )) {
+                        Text("Shopar").tag("shopar")
+                        Text("Midnight").tag("midnight")
+                    }
                     Toggle("Collect optional device metadata", isOn: config.collectDeviceMetadata)
                     TextField("Placement IDs (comma or newline separated)", text: config.placementIDsText, axis: .vertical)
                         .lineLimit(2...5).textInputAutocapitalization(.never).autocorrectionDisabled()
@@ -378,7 +406,7 @@ private struct DemoSettingsTab: View {
                 }
 
                 Section {
-                    Text("Each SDK initializes once per process. Changes to an initialized module's app ID or endpoint are pending until the demo is relaunched. Placement selection and optional metadata preference update live.")
+                    Text("Each SDK initializes once per process. Changes to an initialized module's app ID, endpoint, or appearance are pending until the demo is relaunched. Placement selection and optional metadata preference update live.")
                     Text("Discovery sends no Agency PWT. The two modules do not share identity, session, or owner state.")
                 } header: {
                     Text("Runtime behavior")

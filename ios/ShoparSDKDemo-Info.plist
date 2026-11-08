@@ -10,6 +10,7 @@
     <key>CFBundlePackageType</key><string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>
     <key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
+    <key>ShoparSDKSourceRevision</key><string>$(INFOPLIST_KEY_ShoparSDKSourceRevision)</string>
     <key>LSApplicationCategoryType</key><string>public.app-category.utilities</string>
     <key>LSRequiresIPhoneOS</key><true/>
     <key>MinimumOSVersion</key><string>$(IPHONEOS_DEPLOYMENT_TARGET)</string>
