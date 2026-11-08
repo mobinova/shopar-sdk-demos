@@ -1,0 +1,91 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		100000000000000000000001 /* ShoparSDKDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200000000000000000000001 /* ShoparSDKDemoApp.swift */; };
+		100000000000000000000002 /* ShoparDiscovery product in Frameworks */ = {isa = PBXBuildFile; productRef = 900000000000000000000002 /* ShoparDiscovery */; };
+		100000000000000000000003 /* ShoparAgency product in Frameworks */ = {isa = PBXBuildFile; productRef = 900000000000000000000001 /* ShoparAgency */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		200000000000000000000001 /* ShoparSDKDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoparSDKDemoApp.swift; sourceTree = "<group>"; };
+		200000000000000000000002 /* ShoparSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoparSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		300000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
+			100000000000000000000003 /* ShoparAgency product in Frameworks */,
+			100000000000000000000002 /* ShoparDiscovery product in Frameworks */,
+		); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		400000000000000000000001 = {isa = PBXGroup; children = (
+			400000000000000000000002 /* Sources */,
+			400000000000000000000003 /* Products */,
+		); sourceTree = "<group>"; };
+		400000000000000000000002 /* Sources */ = {isa = PBXGroup; children = (
+			200000000000000000000001 /* ShoparSDKDemoApp.swift */,
+		); path = Sources/ShoparSDKDemo; sourceTree = "<group>"; };
+		400000000000000000000003 /* Products */ = {isa = PBXGroup; children = (
+			200000000000000000000002 /* ShoparSDKDemo.app */,
+		); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		500000000000000000000001 /* ShoparSDKDemo */ = {isa = PBXNativeTarget; buildConfigurationList = 800000000000000000000002 /* Build configuration list for PBXNativeTarget "ShoparSDKDemo" */; buildPhases = (
+			700000000000000000000001 /* Sources */,
+			300000000000000000000001 /* Frameworks */,
+			700000000000000000000002 /* Resources */,
+		); buildRules = (); dependencies = (); name = ShoparSDKDemo; packageProductDependencies = (
+			900000000000000000000001 /* ShoparAgency */,
+			900000000000000000000002 /* ShoparDiscovery */,
+		); productName = ShoparSDKDemo; productReference = 200000000000000000000002 /* ShoparSDKDemo.app */; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		600000000000000000000001 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 1600; TargetAttributes = {500000000000000000000001 = {CreatedOnToolsVersion = 16.0; }; }; }; buildConfigurationList = 800000000000000000000001 /* Build configuration list for PBXProject "ShoparSDKDemo" */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 400000000000000000000001; packageReferences = (
+			A00000000000000000000001 /* XCLocalSwiftPackageReference "../vendor/shopar-ios-sdk" */,
+		); projectDirPath = ""; projectRoot = ""; targets = (
+			500000000000000000000001 /* ShoparSDKDemo */,
+		); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		700000000000000000000002 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		700000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+			100000000000000000000001 /* ShoparSDKDemoApp.swift in Sources */,
+		); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		810000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Debug; };
+		810000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Release; };
+		820000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Shopar SDK Demo"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; IPHONEOS_DEPLOYMENT_TARGET = 16.0; PRODUCT_BUNDLE_IDENTIFIER = app.shopar.sdkdemo.ios; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		820000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Shopar SDK Demo"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; IPHONEOS_DEPLOYMENT_TARGET = 16.0; PRODUCT_BUNDLE_IDENTIFIER = app.shopar.sdkdemo.ios; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		800000000000000000000001 /* Build configuration list for PBXProject "ShoparSDKDemo" */ = {isa = XCConfigurationList; buildConfigurations = (810000000000000000000001 /* Debug */, 810000000000000000000002 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		800000000000000000000002 /* Build configuration list for PBXNativeTarget "ShoparSDKDemo" */ = {isa = XCConfigurationList; buildConfigurations = (820000000000000000000001 /* Debug */, 820000000000000000000002 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A00000000000000000000001 /* XCLocalSwiftPackageReference "../vendor/shopar-ios-sdk" */ = {isa = XCLocalSwiftPackageReference; relativePath = ../vendor/shopar-ios-sdk; };
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		900000000000000000000001 /* ShoparAgency */ = {isa = XCSwiftPackageProductDependency; package = A00000000000000000000001 /* XCLocalSwiftPackageReference "../vendor/shopar-ios-sdk" */; productName = ShoparAgency; };
+		900000000000000000000002 /* ShoparDiscovery */ = {isa = XCSwiftPackageProductDependency; package = A00000000000000000000001 /* XCLocalSwiftPackageReference "../vendor/shopar-ios-sdk" */; productName = ShoparDiscovery; };
+/* End XCSwiftPackageProductDependency section */
+
+	};
+	rootObject = 600000000000000000000001 /* Project object */;
+}

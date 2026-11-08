@@ -1,0 +1,6 @@
+[submodule "vendor/shopar-android-sdk"]
+	path = vendor/shopar-android-sdk
+	url = https://github.com/mobinova/shopar-android-sdk.git
+[submodule "vendor/shopar-ios-sdk"]
+	path = vendor/shopar-ios-sdk
+	url = https://github.com/mobinova/shopar-ios-sdk.git
