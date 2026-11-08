@@ -14,6 +14,8 @@
 /* Begin PBXFileReference section */
 		200000000000000000000001 /* ShoparSDKDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoparSDKDemoApp.swift; sourceTree = "<group>"; };
 		200000000000000000000002 /* ShoparSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoparSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		200000000000000000000003 /* ShoparSDKDemo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ShoparSDKDemo.xcconfig; sourceTree = "<group>"; };
+		200000000000000000000004 /* ShoparSDKDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShoparSDKDemo-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +29,8 @@
 		400000000000000000000001 = {isa = PBXGroup; children = (
 			400000000000000000000002 /* Sources */,
 			400000000000000000000003 /* Products */,
+			200000000000000000000003 /* ShoparSDKDemo.xcconfig */,
+			200000000000000000000004 /* ShoparSDKDemo-Info.plist */,
 		); sourceTree = "<group>"; };
 		400000000000000000000002 /* Sources */ = {isa = PBXGroup; children = (
 			200000000000000000000001 /* ShoparSDKDemoApp.swift */,
@@ -68,8 +72,8 @@
 /* Begin XCBuildConfiguration section */
 		810000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Debug; };
 		810000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 5.0; }; name = Release; };
-		820000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Shopar SDK Demo"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_ShoparSDKSourceRevision = e3752ce611c1645f101f6482e798c7a78e1cbd12; IPHONEOS_DEPLOYMENT_TARGET = 16.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = app.shopar.sdkdemo.ios; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
-		820000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Shopar SDK Demo"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_ShoparSDKSourceRevision = e3752ce611c1645f101f6482e798c7a78e1cbd12; IPHONEOS_DEPLOYMENT_TARGET = 16.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = app.shopar.sdkdemo.ios; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+		820000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; baseConfigurationReference = 200000000000000000000003 /* ShoparSDKDemo.xcconfig */; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = "ShoparSDKDemo-Info.plist"; INFOPLIST_KEY_CFBundleDisplayName = "Shopar SDK Demo"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_ShoparSDKSourceRevision = e3752ce611c1645f101f6482e798c7a78e1cbd12; IPHONEOS_DEPLOYMENT_TARGET = 16.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = app.shopar.sdkdemo.ios; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		820000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; baseConfigurationReference = 200000000000000000000003 /* ShoparSDKDemo.xcconfig */; buildSettings = {CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = "ShoparSDKDemo-Info.plist"; INFOPLIST_KEY_CFBundleDisplayName = "Shopar SDK Demo"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities"; INFOPLIST_KEY_ShoparSDKSourceRevision = e3752ce611c1645f101f6482e798c7a78e1cbd12; IPHONEOS_DEPLOYMENT_TARGET = 16.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = app.shopar.sdkdemo.ios; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */

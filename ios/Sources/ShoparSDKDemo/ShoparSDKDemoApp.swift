@@ -17,6 +17,20 @@ private struct DemoConfiguration: Codable, Equatable {
     var placementIDsText = ""
     var selectedPlacementID = ""
 
+    init() {
+        let defaults = Bundle.main.infoDictionary ?? [:]
+        agencyAppID = defaults["ShoparDemoAgencyAppID"] as? String ?? ""
+        agencyHost = defaults["ShoparDemoAgencyHost"] as? String ?? "grpc.shopar.app"
+        agencyPort = defaults["ShoparDemoAgencyPort"] as? String ?? "443"
+        agencyTLS = (defaults["ShoparDemoAgencyTLS"] as? String).map { $0.lowercased() != "no" && $0.lowercased() != "false" } ?? true
+        discoveryAppID = defaults["ShoparDemoDiscoveryAppID"] as? String ?? ""
+        discoveryHost = defaults["ShoparDemoDiscoveryHost"] as? String ?? "grpc.shopar.app"
+        discoveryPort = defaults["ShoparDemoDiscoveryPort"] as? String ?? "443"
+        discoveryTLS = (defaults["ShoparDemoDiscoveryTLS"] as? String).map { $0.lowercased() != "no" && $0.lowercased() != "false" } ?? true
+        placementIDsText = defaults["ShoparDemoDiscoveryPlacementIDs"] as? String ?? ""
+        selectedPlacementID = defaults["ShoparDemoDiscoverySelectedPlacementID"] as? String ?? ""
+    }
+
     var placementIDs: [String] {
         placementIDsText
             .components(separatedBy: CharacterSet(charactersIn: ",\n"))

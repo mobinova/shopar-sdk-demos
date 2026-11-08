@@ -64,27 +64,27 @@ private data class StartupConfiguration(val appId: String, val host: String, val
 
 private class DemoSettings(context: Context) {
     private val prefs = context.getSharedPreferences("shopar-sdk-demo-settings", Context.MODE_PRIVATE)
-    var agencyAppId by mutableStateOf(prefs.getString("agency.appId", "").orEmpty())
+    var agencyAppId by mutableStateOf(prefs.getString("agency.appId", BuildConfig.SHOPAR_DEMO_AGENCY_APP_ID).orEmpty())
         private set
-    var agencyHost by mutableStateOf(prefs.getString("agency.host", "").orEmpty())
+    var agencyHost by mutableStateOf(prefs.getString("agency.host", BuildConfig.SHOPAR_DEMO_AGENCY_HOST).orEmpty())
         private set
-    var agencyPort by mutableStateOf(prefs.getString("agency.port", "443").orEmpty())
+    var agencyPort by mutableStateOf(prefs.getString("agency.port", BuildConfig.SHOPAR_DEMO_AGENCY_PORT).orEmpty())
         private set
-    var agencyTls by mutableStateOf(prefs.getBoolean("agency.tls", true))
+    var agencyTls by mutableStateOf(prefs.getBoolean("agency.tls", BuildConfig.SHOPAR_DEMO_AGENCY_TLS))
         private set
-    var discoveryAppId by mutableStateOf(prefs.getString("discovery.appId", "").orEmpty())
+    var discoveryAppId by mutableStateOf(prefs.getString("discovery.appId", BuildConfig.SHOPAR_DEMO_DISCOVERY_APP_ID).orEmpty())
         private set
-    var discoveryHost by mutableStateOf(prefs.getString("discovery.host", "").orEmpty())
+    var discoveryHost by mutableStateOf(prefs.getString("discovery.host", BuildConfig.SHOPAR_DEMO_DISCOVERY_HOST).orEmpty())
         private set
-    var discoveryPort by mutableStateOf(prefs.getString("discovery.port", "443").orEmpty())
+    var discoveryPort by mutableStateOf(prefs.getString("discovery.port", BuildConfig.SHOPAR_DEMO_DISCOVERY_PORT).orEmpty())
         private set
-    var discoveryTls by mutableStateOf(prefs.getBoolean("discovery.tls", true))
+    var discoveryTls by mutableStateOf(prefs.getBoolean("discovery.tls", BuildConfig.SHOPAR_DEMO_DISCOVERY_TLS))
         private set
     var collectDeviceMetadata by mutableStateOf(prefs.getBoolean("discovery.collectDeviceMetadata", false))
         private set
-    var placementIdsText by mutableStateOf(prefs.getString("discovery.placementIds", "").orEmpty())
+    var placementIdsText by mutableStateOf(prefs.getString("discovery.placementIds", BuildConfig.SHOPAR_DEMO_DISCOVERY_PLACEMENT_IDS).orEmpty())
         private set
-    var selectedPlacementId by mutableStateOf(prefs.getString("discovery.selectedPlacementId", "").orEmpty())
+    var selectedPlacementId by mutableStateOf(prefs.getString("discovery.selectedPlacementId", BuildConfig.SHOPAR_DEMO_DISCOVERY_SELECTED_PLACEMENT_ID).orEmpty())
         private set
     var activeProfile by mutableStateOf(prefs.getString("activeProfile", "").orEmpty())
         private set

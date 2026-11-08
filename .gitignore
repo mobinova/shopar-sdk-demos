@@ -2,6 +2,8 @@
 .gradle/
 **/build/
 **/local.properties
+android/demo.properties
+ios/ShoparSDKDemo.local.xcconfig
 ios/DerivedData/
 **/.swiftpm/
 **/.build/

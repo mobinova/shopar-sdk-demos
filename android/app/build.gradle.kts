@@ -1,7 +1,17 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
 }
+
+val shoparDemoProperties = Properties().apply {
+    val file = rootProject.file("demo.properties")
+    if (file.isFile) file.inputStream().use { load(it) }
+}
+
+fun demoProperty(name: String, default: String): String =
+    shoparDemoProperties.getProperty(name, default).replace("\\", "\\\\").replace("\"", "\\\"")
 
 val shoparAndroidSdkRevision = providers.exec {
     commandLine(
@@ -21,6 +31,16 @@ android {
         versionCode = 1
         versionName = "0.1.0-demo"
         buildConfigField("String", "SHOPAR_SDK_SOURCE_REVISION", "\"$shoparAndroidSdkRevision\"")
+        buildConfigField("String", "SHOPAR_DEMO_AGENCY_APP_ID", "\"${demoProperty("agency.appId", "")}\"")
+        buildConfigField("String", "SHOPAR_DEMO_AGENCY_HOST", "\"${demoProperty("agency.host", "grpc.shopar.app")}\"")
+        buildConfigField("String", "SHOPAR_DEMO_AGENCY_PORT", "\"${demoProperty("agency.port", "443")}\"")
+        buildConfigField("Boolean", "SHOPAR_DEMO_AGENCY_TLS", demoProperty("agency.tls", "true"))
+        buildConfigField("String", "SHOPAR_DEMO_DISCOVERY_APP_ID", "\"${demoProperty("discovery.appId", "")}\"")
+        buildConfigField("String", "SHOPAR_DEMO_DISCOVERY_HOST", "\"${demoProperty("discovery.host", "grpc.shopar.app")}\"")
+        buildConfigField("String", "SHOPAR_DEMO_DISCOVERY_PORT", "\"${demoProperty("discovery.port", "443")}\"")
+        buildConfigField("Boolean", "SHOPAR_DEMO_DISCOVERY_TLS", demoProperty("discovery.tls", "true"))
+        buildConfigField("String", "SHOPAR_DEMO_DISCOVERY_PLACEMENT_IDS", "\"${demoProperty("discovery.placementIds", "")}\"")
+        buildConfigField("String", "SHOPAR_DEMO_DISCOVERY_SELECTED_PLACEMENT_ID", "\"${demoProperty("discovery.selectedPlacementId", "")}\"")
     }
 
     buildFeatures { compose = true; buildConfig = true }

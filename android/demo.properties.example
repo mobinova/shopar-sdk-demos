@@ -1,0 +1,13 @@
+# Copy to android/demo.properties and use production IDs created for the demo apps.
+# This file is ignored by git. App IDs and placement IDs are public configuration,
+# but keeping them local lets the public demo repository remain environment-neutral.
+agency.appId=
+agency.host=grpc.shopar.app
+agency.port=443
+agency.tls=true
+discovery.appId=
+discovery.host=grpc.shopar.app
+discovery.port=443
+discovery.tls=true
+discovery.placementIds=
+discovery.selectedPlacementId=
