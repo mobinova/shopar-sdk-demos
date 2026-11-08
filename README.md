@@ -23,7 +23,7 @@ cd android
 ./gradlew :app:assembleDebug
 ```
 
-The app initially opens Settings. Enter real Agency/Discovery app IDs and a Discovery placement created in Shopar dashboards. Discovery uses the endpoint shown in Settings (defaults to `grpc.shopar.app`) and never uses the Agency session.
+The app initially opens Settings. App IDs and gRPC hosts are blank by default. Enter test app IDs, placement IDs, and an approved staging endpoint from Shopar; the demo will not send requests until those values validate. Discovery never uses the Agency session.
 
 ## iOS
 
@@ -36,3 +36,5 @@ App IDs and gRPC host/port/TLS are fixed when each SDK global module initializes
 Agency access/refresh credentials remain in the Agency SDK's platform-protected storage and are never shown by the demo. The demo cannot create app properties or placements; create them in Agency Dashboard and App Studio first. SDK errors, empty states, and network failures are displayed by the respective tab.
 
 The demo does not include reward fixtures or a parallel earnings path. For live traffic, use an approved Shopar staging configuration and test-owned app properties.
+
+See [`docs/test-properties.md`](docs/test-properties.md) for the four required app properties, their ownership models, and per-platform package IDs. When updating an SDK submodule, Android diagnostics read the pinned Git revision from Gradle; update `INFOPLIST_KEY_ShoparSDKSourceRevision` in the iOS project settings to the new `vendor/shopar-ios-sdk` submodule SHA as part of the same commit.

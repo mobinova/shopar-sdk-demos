@@ -3,6 +3,13 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+val shoparAndroidSdkRevision = providers.exec {
+    commandLine(
+        "git", "-C", rootProject.file("../vendor/shopar-android-sdk").absolutePath,
+        "rev-parse", "--short=12", "HEAD",
+    )
+}.standardOutput.asText.get().trim()
+
 android {
     namespace = "app.shopar.demos"
     compileSdk = 37
@@ -13,9 +20,10 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0-demo"
+        buildConfigField("String", "SHOPAR_SDK_SOURCE_REVISION", "\"$shoparAndroidSdkRevision\"")
     }
 
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

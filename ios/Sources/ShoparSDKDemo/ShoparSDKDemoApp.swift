@@ -1,15 +1,16 @@
 import Foundation
 import SwiftUI
+import UIKit
 import ShoparAgency
 import ShoparDiscovery
 
 private struct DemoConfiguration: Codable, Equatable {
     var agencyAppID = ""
-    var agencyHost = "grpc.shopar.app"
+    var agencyHost = ""
     var agencyPort = "443"
     var agencyTLS = true
     var discoveryAppID = ""
-    var discoveryHost = "grpc.shopar.app"
+    var discoveryHost = ""
     var discoveryPort = "443"
     var discoveryTLS = true
     var collectDeviceMetadata = false
@@ -367,6 +368,17 @@ private struct DemoSettingsTab: View {
                     Text("Discovery sends no Agency PWT. The two modules do not share identity, session, or owner state.")
                 } header: {
                     Text("Runtime behavior")
+                }
+
+                Section {
+                    Text("Demo build: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown")")
+                    Text("Shopar iOS SDK source: \(Bundle.main.infoDictionary?["ShoparSDKSourceRevision"] as? String ?? "unknown")")
+                    Text("Device OS: iOS \(UIDevice.current.systemVersion)")
+                    Text("Agency app: \(settings.configuration.agencyAppID.isEmpty ? "not configured" : settings.configuration.agencyAppID)")
+                    Text("Discovery app: \(settings.configuration.discoveryAppID.isEmpty ? "not configured" : settings.configuration.discoveryAppID)")
+                    Text("Selected placement: \(settings.configuration.selectedPlacementID.isEmpty ? "not configured" : settings.configuration.selectedPlacementID)")
+                } header: {
+                    Text("Demo diagnostics")
                 }
 
                 if let resetMessage {

@@ -2,6 +2,7 @@ package app.shopar.demos
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -65,7 +66,7 @@ private class DemoSettings(context: Context) {
     private val prefs = context.getSharedPreferences("shopar-sdk-demo-settings", Context.MODE_PRIVATE)
     var agencyAppId by mutableStateOf(prefs.getString("agency.appId", "").orEmpty())
         private set
-    var agencyHost by mutableStateOf(prefs.getString("agency.host", "grpc.shopar.app").orEmpty())
+    var agencyHost by mutableStateOf(prefs.getString("agency.host", "").orEmpty())
         private set
     var agencyPort by mutableStateOf(prefs.getString("agency.port", "443").orEmpty())
         private set
@@ -73,7 +74,7 @@ private class DemoSettings(context: Context) {
         private set
     var discoveryAppId by mutableStateOf(prefs.getString("discovery.appId", "").orEmpty())
         private set
-    var discoveryHost by mutableStateOf(prefs.getString("discovery.host", "grpc.shopar.app").orEmpty())
+    var discoveryHost by mutableStateOf(prefs.getString("discovery.host", "").orEmpty())
         private set
     var discoveryPort by mutableStateOf(prefs.getString("discovery.port", "443").orEmpty())
         private set
@@ -125,9 +126,9 @@ private class DemoSettings(context: Context) {
 
     fun selectProfile(name: String) {
         val profile = runCatching { JSONObject(prefs.getString("profile.$name", null) ?: return) }.getOrNull() ?: return
-        agencyAppId = profile.optString("agencyAppId"); agencyHost = profile.optString("agencyHost", "grpc.shopar.app")
+        agencyAppId = profile.optString("agencyAppId"); agencyHost = profile.optString("agencyHost")
         agencyPort = profile.optString("agencyPort", "443"); agencyTls = profile.optBoolean("agencyTls", true)
-        discoveryAppId = profile.optString("discoveryAppId"); discoveryHost = profile.optString("discoveryHost", "grpc.shopar.app")
+        discoveryAppId = profile.optString("discoveryAppId"); discoveryHost = profile.optString("discoveryHost")
         discoveryPort = profile.optString("discoveryPort", "443"); discoveryTls = profile.optBoolean("discoveryTls", true)
         collectDeviceMetadata = profile.optBoolean("collectDeviceMetadata", false)
         placementIdsText = profile.optString("placementIdsText"); selectedPlacementId = profile.optString("selectedPlacementId")
@@ -290,6 +291,7 @@ private fun SettingsScreen(settings: DemoSettings, coordinator: DemoSdkCoordinat
     var profileName by remember { mutableStateOf("") }
     var profileMenu by remember { mutableStateOf(false) }
     var showResetConfirmation by remember { mutableStateOf(false) }
+    var resetMessage by remember { mutableStateOf<String?>(null) }
     val agencyPending = coordinator.activeAgency?.let { it != settings.agencyStartup() } == true
     val discoveryPending = coordinator.activeDiscovery?.let { it != settings.discoveryStartup() } == true
 
@@ -301,7 +303,8 @@ private fun SettingsScreen(settings: DemoSettings, coordinator: DemoSdkCoordinat
             confirmButton = {
                 TextButton(onClick = {
                     showResetConfirmation = false
-                    runCatching { ShoparDiscovery.resetInstallationIdentity() }
+                    resetMessage = runCatching { ShoparDiscovery.resetInstallationIdentity() }
+                        .fold({ "Discovery installation ID reset. Historical server events remain unchanged." }, { "Reset failed: ${it.message ?: "try again"}" })
                 }) { Text("Reset ID") }
             },
             dismissButton = { TextButton(onClick = { showResetConfirmation = false }) { Text("Cancel") } },
@@ -314,6 +317,11 @@ private fun SettingsScreen(settings: DemoSettings, coordinator: DemoSdkCoordinat
         if (agencyPending || discoveryPending) {
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)) {
                 Text("Startup configuration changed. Relaunch the demo app to apply changed app IDs or endpoints.", Modifier.padding(14.dp))
+            }
+        }
+        if (!settings.agencyTls || !settings.discoveryTls) {
+            Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
+                Text("TLS is disabled for at least one module. Use this only on an isolated local test network; Agency sessions are sensitive.", Modifier.padding(14.dp))
             }
         }
 
@@ -334,7 +342,9 @@ private fun SettingsScreen(settings: DemoSettings, coordinator: DemoSdkCoordinat
             LabeledSwitch("Collect optional device metadata", settings.collectDeviceMetadata, settings::updateCollectDeviceMetadata)
             ConfigField("Placement IDs (comma or newline separated)", settings.placementIdsText, settings::updatePlacementIds, singleLine = false)
             ConfigField("Selected placement ID", settings.selectedPlacementId, settings::updateSelectedPlacementId)
-            OutlinedButton(onClick = { showResetConfirmation = true }) { Text("Reset Discovery installation ID") }
+            OutlinedButton(enabled = coordinator.activeDiscovery != null, onClick = { showResetConfirmation = true }) { Text("Reset Discovery installation ID") }
+            if (coordinator.activeDiscovery == null) Text("Open the Discovery tab once before resetting its installation ID.", style = MaterialTheme.typography.bodySmall)
+            resetMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
         } }
 
         Card { Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(9.dp)) {
@@ -352,6 +362,16 @@ private fun SettingsScreen(settings: DemoSettings, coordinator: DemoSdkCoordinat
                 }
             }
             Text("Profiles contain only non-secret configuration values. They never contain SDK tokens.", style = MaterialTheme.typography.bodySmall)
+        } }
+
+        Card { Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            Text("Demo diagnostics", style = MaterialTheme.typography.titleMedium)
+            Text("Demo build: ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
+            Text("Shopar Android SDK source: ${BuildConfig.SHOPAR_SDK_SOURCE_REVISION}", style = MaterialTheme.typography.bodySmall)
+            Text("Device OS: Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})", style = MaterialTheme.typography.bodySmall)
+            Text("Agency app: ${settings.agencyAppId.ifBlank { "not configured" }}", style = MaterialTheme.typography.bodySmall)
+            Text("Discovery app: ${settings.discoveryAppId.ifBlank { "not configured" }}", style = MaterialTheme.typography.bodySmall)
+            Text("Selected placement: ${settings.selectedPlacementId.ifBlank { "not configured" }}", style = MaterialTheme.typography.bodySmall)
         } }
 
         Text("Agency credentials remain inside the SDK. Discovery uses no Agency auth. Placement format, offers, and product ordering come from Shopar.", style = MaterialTheme.typography.bodySmall)
