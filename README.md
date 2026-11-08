@@ -25,6 +25,8 @@ cd android
 
 The app initially opens Settings. App IDs and gRPC hosts are blank by default. Enter test app IDs, placement IDs, and an approved staging endpoint from Shopar; the demo will not send requests until those values validate. Discovery never uses the Agency session.
 
+TLS is enabled by default. Only the Android debug manifest permits cleartext for isolated local testing; the release manifest keeps cleartext disabled. Never disable TLS for Agency sessions outside a trusted local test environment.
+
 ## iOS
 
 Open `ios/ShoparSDKDemo.xcodeproj` in Xcode and run the `ShoparSDKDemo` scheme on iOS 16 or later. The project consumes the pinned local `vendor/shopar-ios-sdk` Swift Package.
