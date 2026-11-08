@@ -233,7 +233,10 @@ private fun AgencyDemoScreen(settings: DemoSettings, coordinator: DemoSdkCoordin
     var error by remember { mutableStateOf<String?>("Preparing Agency SDK configuration…") }
     var showSecurityInfo by remember { mutableStateOf(false) }
     val startup = settings.agencyStartup()
-    LaunchedEffect(startup) { error = startup?.let { coordinator.startAgency(context, it) } ?: "Enter a valid Agency app ID and endpoint in Settings." }
+    LaunchedEffect(startup) {
+        error = if (startup == null) "Enter a valid Agency app ID and endpoint in Settings."
+        else coordinator.startAgency(context, startup)
+    }
     if (error != null) ConfigRequiredScreen("Agency", error ?: "Agency is not configured.", onOpenSettings, modifier)
     else androidx.compose.foundation.layout.Box(modifier.fillMaxSize()) {
         ShoparAgency.LinksScreen(onOpenAccountSecurity = { showSecurityInfo = true })
@@ -252,8 +255,8 @@ private fun DiscoveryDemoScreen(settings: DemoSettings, coordinator: DemoSdkCoor
     var menuExpanded by remember { mutableStateOf(false) }
     val startup = settings.discoveryStartup()
     LaunchedEffect(startup, settings.collectDeviceMetadata) {
-        error = startup?.let { coordinator.startDiscovery(context, it, settings.collectDeviceMetadata) }
-            ?: "Enter a valid Discovery app ID and endpoint in Settings."
+        error = if (startup == null) "Enter a valid Discovery app ID and endpoint in Settings."
+        else coordinator.startDiscovery(context, startup, settings.collectDeviceMetadata)
     }
     Column(modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Discovery demo", style = MaterialTheme.typography.headlineSmall)
